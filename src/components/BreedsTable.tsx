@@ -5,11 +5,8 @@ import React, { Suspense } from 'react';
 import { StoreValue, IBreedItemType } from 'types';
 import { useSelector } from 'react-redux';
 import { DogApis } from 'service/api-service';
-import { styled } from '@mui/material/styles';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Grid from '@mui/material/Grid';
+// import BreedGridDialog from './BreedGridDialog';
+const BreedGridDialog = React.lazy(() => import('./BreedGridDialog'))
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -41,14 +38,6 @@ interface HeadCell {
   label: String;
   numeric: boolean;
 }
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
 
 const headCells: HeadCell[] = [
   {
@@ -264,8 +253,8 @@ const BreedsTable: React.FC = () => {
 
   const onGenerateClick = async (clickedBreedName: string) => {
     setOpen(true)
-    const resource = await DogApis.getBreedImages(clickedBreedName)
-    setDlgUmg(resource)
+    const breedImages = await DogApis.getBreedImages(clickedBreedName)
+    setDlgUmg(breedImages)
   }
 
   // Avoid a layout jump when reaching the last page with empty recipes.
@@ -375,32 +364,13 @@ const BreedsTable: React.FC = () => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Dog Poster Generate"}
-        </DialogTitle>
-        <DialogContent>
-          <Grid container spacing={2}>
-            {dlgImages.message && dlgImages.message.map(item => (
-              <Grid item xs={4} key={item}>
-                <img
-                  src={`${item}?w=164&h=164&fit=crop&auto=format`}
-                  srcSet={`${item}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                  alt={'dog poster'}
-                  width={150}
-                  height={150}
-                  loading="lazy"
-                />
-              </Grid>
-            ))}
-          </Grid>
-        </DialogContent>
-      </Dialog>
+      <Suspense fallback={<h1>Loading posts...</h1>}>
+        <BreedGridDialog
+          open={open}
+          handleClose={handleClose}
+          dlgImages={dlgImages}
+        />
+      </Suspense>
     </Box>
   );
 }

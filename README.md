@@ -5,9 +5,9 @@
 > - Structured the whole project with layouts, pages, components, types and so on.
 > - Used Dog apis with this link: https://dog.ceo/dog-api/documentation/
 > - Setup redux flow to the project for managing application states.
-> - Write and load the state value to the localstorage for keeping the application state even the application refreshed.
-> - Display dog data from the mock server on in to the MUI table. Created a Table component made it as a re-usable component. Using it on Home page.
-> - Created Detail page and displaying detail data with Grid view.
+> - Display dog data from the server in to the MUI table. Created a Table component made it as a re-usable component. Using it on Home page.
+> - Created Breed images dialog and displaying breed images with Grid view.
+> - Used React.suspense for lazy loading component
 
 
 ## Launch Script
