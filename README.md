@@ -8,7 +8,7 @@
 > - Display dog data from the server in to the MUI table. Created a Table component made it as a re-usable component. Using it on Home page.
 > - Created Breed images dialog and displaying breed images with Grid view.
 > - Used React.suspense for lazy loading component
-
+> - Created a mainLayoutWrapHOC
 
 ## Launch Script
 

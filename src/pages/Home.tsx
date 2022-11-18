@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DogApis } from 'service/api-service';
 import { setBreeds } from 'redux/redux-slice';
 import { StoreValue } from 'types';
-import MainLayout from '../layouts/MainLayout';
+import mainLayoutWrapHOC from 'hoc/MainLayoutWrapHOC';
 
 /**
  * Pulling data from the dog server and dispatch data into the store
@@ -29,10 +29,8 @@ const Home: React.FC = () => {
   }, [dispatch, breeds])
 
   return (
-    <MainLayout>
-      <BreedsTable /> 
-    </MainLayout>
+    <BreedsTable /> 
   );
 };
 
-export default Home;
+export default mainLayoutWrapHOC(Home);
