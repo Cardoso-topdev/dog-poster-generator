@@ -9,6 +9,7 @@
 > - Created Breed images dialog and displaying breed images with Grid view.
 > - Used React.suspense for lazy loading component
 > - Created a mainLayoutWrapHOC
+> - Setup jest testing environment and add an unit test case for Header component
 
 ## Launch Script
 
@@ -21,3 +22,7 @@ This script will launch the project with 3001 port
 > npm run build <br />
 > npm run test <br />
 > npm run eject <br />
+> npm run unit-test <br />
+
+#### Mock server start script
+json-server --watch src/mock/db.json

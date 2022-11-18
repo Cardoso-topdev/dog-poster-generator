@@ -74,7 +74,7 @@ interface EnhancedTableProps {
   rowCount: number;
 }
 
-const EnhancedTableHead: React.FC<EnhancedTableProps> = (props) => {
+const EnhancedTableHead = (props: EnhancedTableProps) => {
   const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
     props;
   const createSortHandler =
@@ -182,7 +182,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
   );
 };
 
-const BreedsTable: React.FC = () => {
+const BreedsTable = () => {
   const breeds = useSelector((state: StoreValue) => state.breedReducer.breeds)
   const breedList: Array<IBreedItemType> = Object.keys(breeds).map((item: string) => ({
     breedName: item,

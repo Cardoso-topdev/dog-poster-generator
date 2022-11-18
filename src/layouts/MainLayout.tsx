@@ -5,7 +5,7 @@ import Header from '../components/Header';
 /**
  * MainLayout is using on the all pages
  */
-const MainLayout: React.FC<PropsWithChildren<{}>> = ({children}) => {
+const MainLayout = ({children}: PropsWithChildren<{}>) => {
   return (
     <Box component={'div'}>
       <Header />

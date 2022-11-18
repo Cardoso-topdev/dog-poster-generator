@@ -5,7 +5,7 @@ import Home from '../pages/Home';
 /**
  * Main Route for the application
  */
-const MainRoute: React.FC = () => {
+const MainRoute = () => {
   return (
     <Routes>
       <Route path='/' element={<Home />} />

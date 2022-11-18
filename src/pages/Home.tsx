@@ -4,12 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DogApis } from 'service/api-service';
 import { setBreeds } from 'redux/redux-slice';
 import { StoreValue } from 'types';
-import mainLayoutWrapHOC from 'hoc/MainLayoutWrapHOC';
+import mainLayoutWrapHOC from 'pages/hoc/MainLayoutWrapHOC';
 
 /**
  * Pulling data from the dog server and dispatch data into the store
  */
-const Home: React.FC = () => {
+const Home = () => {
   
   const breeds = useSelector((state: StoreValue) => state.breedReducer.breeds)
   const dispatch = useDispatch()

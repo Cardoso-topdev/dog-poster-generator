@@ -4,7 +4,7 @@ import React from 'react';
 /**
  * Header component.
  */
-const Header: React.FC = () => {
+const Header = () => {
   return (
     <Box sx={{ flexGrow: 1}}>
       <AppBar>

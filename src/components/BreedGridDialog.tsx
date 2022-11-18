@@ -11,7 +11,7 @@ interface IBreedGridDialogProps {
     message: Array<string>
   }
 }
-const BreedGridDialog: React.FC<IBreedGridDialogProps> = ({handleClose, open, dlgImages}) => {
+const BreedGridDialog = ({handleClose, open, dlgImages}: IBreedGridDialogProps) => {
   return (
     <Dialog
         open={open}
