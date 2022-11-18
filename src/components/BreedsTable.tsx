@@ -1,9 +1,15 @@
 import { Delete, FilterList } from '@mui/icons-material';
-import { alpha, Box, Checkbox, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Toolbar, Tooltip, Typography } from '@mui/material';
+import { alpha, Box, Checkbox, IconButton, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Toolbar, Tooltip, Typography } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { StoreValue, IBreedItemType } from 'types';
 import { useSelector } from 'react-redux';
+import { DogApis } from 'service/api-service';
+import { styled } from '@mui/material/styles';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Grid from '@mui/material/Grid';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -35,6 +41,14 @@ interface HeadCell {
   label: String;
   numeric: boolean;
 }
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+}));
 
 const headCells: HeadCell[] = [
   {
@@ -185,12 +199,19 @@ const BreedsTable: React.FC = () => {
     breedName: item,
     subBreeds: breeds[item as keyof object]
   }))
-  console.log('breedList ===> ', breedList)
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<string>('name');
   const [selected, setSelected] = React.useState<string[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [open, setOpen] = React.useState(false);
+  const [dlgImages, setDlgUmg] = React.useState({
+    message: []
+  })
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -240,6 +261,12 @@ const BreedsTable: React.FC = () => {
   };
 
   const isSelected = (name: string) => selected.indexOf(name) !== -1;
+
+  const onGenerateClick = async (clickedBreedName: string) => {
+    setOpen(true)
+    const resource = await DogApis.getBreedImages(clickedBreedName)
+    setDlgUmg(resource)
+  }
 
   // Avoid a layout jump when reaching the last page with empty recipes.
   const emptyRows =
@@ -292,7 +319,7 @@ const BreedsTable: React.FC = () => {
                       </TableCell>
                       <TableCell
                         component="th"
-                        id={labelId}
+                        id={breedName}
                         scope="row"
                         padding="none"
                       >
@@ -300,16 +327,25 @@ const BreedsTable: React.FC = () => {
                       </TableCell>
                       <TableCell
                         component="th"
-                        id={labelId}
+                        id={breedName + '_sub'}
                         scope="row"
                         padding="none"
                       >
-                        {'subBreeds dropdown'}
+                        <Box sx={{ m: 1, minWidth: 120 }}>
+                          <Select
+                            sx={{width: '100%'}}
+                          >
+                            {subBreeds.map(subBreedItem => (
+                              <MenuItem value={subBreedItem} key={subBreedItem}>{subBreedItem}</MenuItem>
+                            ))}
+                          </Select>
+                        </Box>
                       </TableCell>
-                      <TableCell align="right">{`count`}</TableCell>
+                      <TableCell align="right">{subBreeds.length}</TableCell>
                       <TableCell align="center">
                         <IconButton
                           color="primary"
+                          onClick={() => onGenerateClick(breedName)}
                         >
                           <Typography>Generate</Typography>
                         </IconButton>
@@ -339,6 +375,32 @@ const BreedsTable: React.FC = () => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Dog Poster Generate"}
+        </DialogTitle>
+        <DialogContent>
+          <Grid container spacing={2}>
+            {dlgImages.message && dlgImages.message.map(item => (
+              <Grid item xs={4} key={item}>
+                <img
+                  src={`${item}?w=164&h=164&fit=crop&auto=format`}
+                  srcSet={`${item}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                  alt={'dog poster'}
+                  width={150}
+                  height={150}
+                  loading="lazy"
+                />
+              </Grid>
+            ))}
+          </Grid>
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 }

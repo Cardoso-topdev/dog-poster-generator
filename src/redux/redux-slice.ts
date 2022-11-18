@@ -21,7 +21,6 @@ export const reduxSlice: any = createSlice({
   },
   reducers: {
     setBreeds: (state: StoreType, action: ReducerSetBreedsActionType) => {
-      console.log('redux action ===> ', action)
       state.breeds = action.payload.message
       window.localStorage.setItem('MY_APP_STATE', JSON.stringify(state.breeds));
     }

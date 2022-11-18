@@ -12,14 +12,12 @@ import MainLayout from '../layouts/MainLayout';
 const Home: React.FC = () => {
   
   const breeds = useSelector((state: StoreValue) => state.breedReducer.breeds)
-  console.log('breeds ===> ', breeds)
   const dispatch = useDispatch()
 
   useEffect(() => {
     const getBreeds = async (): Promise<void> => {
       try {
         const allBreeds: object = await DogApis.getAllBreeds()
-        console.log('allBreeds ===> ', allBreeds)
         dispatch(setBreeds(allBreeds))
       } catch (e: any) {
         console.log('Get Recipes Error : ', e.response?.data?.message)
